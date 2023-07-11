@@ -6,6 +6,7 @@ import scrollToBottom from '../utils/scrollToBottom';
 import api_data from '../api/config';
 import sendPrivateValue from '../utils/sendPrivateValue';
 import sendValue from '../utils/sendValue';
+import registerUser from '../utils/registerUser';
 
 let stompClient;
 
@@ -20,12 +21,19 @@ const ChatProvider = ({ children }) => {
   });
   const [addFriendTabOpen, setAddFriendTabOpen] = useState(false);
   const [userData, setUserData] = useState({
-    username: '',
+    username: localStorage.getItem('username') ? localStorage.getItem('username') : "",
     receivername: '',
     connected: false,
     message: ''
   });
 
+  useEffect(() => {
+    const username = localStorage.getItem('username');
+    if(username && username.length) {
+      setUserData({...userData, username: username})
+      registerUser(connectWebSocket, setPublicChats, setPrivateChats, { ...userData, username: username })
+    }
+  }, []);
   useEffect(() => {
     scrollToBottom();
   }, [publicChats, privateChats, tab]);

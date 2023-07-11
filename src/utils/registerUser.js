@@ -12,6 +12,7 @@ const registerUser = async (connectWebSocket, setPublicChats, setPrivateChats, u
     const MapPrivateChat = transformArrayToMap(privateChatData, userData);
     setPublicChats(publicChatData);
     setPrivateChats(MapPrivateChat);
+    localStorage.setItem("username", userData.username);
     connectWebSocket();
   } catch (error) {
     console.log(error.message);
